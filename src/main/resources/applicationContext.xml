@@ -11,6 +11,7 @@
 		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.0.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
 
+
 	<context:property-placeholder
 		ignore-unresolvable="true" local-override="true"
 		location="classpath*:/application.properties,classpath*:/application.local.properties" />
@@ -78,6 +79,15 @@
 	<bean id="uuidGenerator"
 		class="org.activiti.engine.impl.persistence.StrongUuidGenerator" />
 
+
+
+	<!-- websocket -->
+	<!-- <bean id="websocket" class="me.kafeitu.demo.activiti.websocket.SystemWebSocketHandler" 
+		/> <websocket:handlers> <websocket:mapping path="/websocket" handler="websocket" 
+		/> <websocket:mapping path="/sockjs/websocket" handler="websocket" /> <websocket:handshake-interceptors> 
+		<bean class="me.kafeitu.demo.activiti.websocket.WebSocketHandshakeInterceptor" 
+		/> </websocket:handshake-interceptors> </websocket:handlers> -->
+
 	<!-- Activiti begin -->
 	<bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
 		<property name="dataSource" ref="dataSource" />
@@ -129,13 +139,13 @@
 						<ref bean="variableCreateListener" />
 					</list>
 				</entry>
-			 <entry key="TASK_ASSIGNED">
+				<entry key="TASK_ASSIGNED">
 					<list>
-					<!-- 新任务提醒 -->
+						<!-- 新任务提醒 -->
 						<bean
 							class="me.kafeitu.demo.activiti.events.TaskCreateGlobalEventListener" />
 					</list>
-				</entry> 
+				</entry>
 			</map>
 
 		</property>

@@ -61,6 +61,7 @@
 </style>
 
 <script src="${ctx }/js/common/jquery-1.8.3.js" type="text/javascript"></script>
+
 <%-- <script src="${ctx }/js/common/jquery.min.js" type="text/javascript"></script> --%>
 <script
 	src="${ctx }/js/common/plugins/jui/jquery-ui-${themeVersion }.min.js"
@@ -77,7 +78,7 @@
 <script src='${ctx }/js/module/main/main-frame.js'
 	type="text/javascript"></script>
 <script src='${ctx }/js/common/bootstrap.js' type="text/javascript"></script>
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 	$(document).ready(function() {
 		
 		function getAutoDelegateTasks() {
@@ -98,8 +99,30 @@
 		/* getAutoDelegateTasks(); */
 		setTimeout(getAutoDelegateTasks(), 50);
 	})
+</script> -->
+<script type="text/javascript"
+	src="${ctx }/js/common/sockjs-0.3.min.js"></script>
+<script>
+	var websocket;
+	if ('WebSocket' in window) {
+		websocket = new WebSocket("ws://localhost:8080/webSocketServer");
+	} else if ('MozWebSocket' in window) {
+		websocket = new MozWebSocket(
+				"ws://localhost:8080/webSocketServer");
+	} else {
+		websocket = new SockJS(
+				"http://localhost:8080/sockjs/webSocketServer");
+	}
+	websocket.onopen = function(evnt) {
+	};
+	websocket.onmessage = function(evnt) {
+		$('#messages').html(evnt.data);
+	};
+	websocket.onerror = function(evnt) {
+	};
+	websocket.onclose = function(evnt) {
+	}
 </script>
-
 </head>
 <body>
 	<!-- #TopPane -->

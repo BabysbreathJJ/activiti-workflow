@@ -6,8 +6,17 @@ import org.activiti.engine.delegate.event.ActivitiEntityEvent;
 import org.activiti.engine.delegate.event.ActivitiEvent;
 import org.activiti.engine.delegate.event.ActivitiEventListener;
 import org.activiti.engine.impl.persistence.entity.TaskEntity;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.socket.TextMessage;
+
+import me.kafeitu.demo.activiti.websocket.SystemWebSocketHandler;
 
 public class TaskCreateGlobalEventListener implements ActivitiEventListener {
+
+	@Bean
+	public SystemWebSocketHandler systemWebSocketHandler() {
+		return new SystemWebSocketHandler();
+	}
 
 	@Override
 	public void onEvent(ActivitiEvent event) {
@@ -20,6 +29,7 @@ public class TaskCreateGlobalEventListener implements ActivitiEventListener {
 			String assignee = task.getAssignee();
 			if (assignee != null && !assignee.equals("")) {
 				System.out.println("任务创建监听——————————————————任务所属人" + assignee);
+				systemWebSocketHandler().sendMessageToUser(assignee, new TextMessage("您有新的代办任务，请查收！"));
 			}
 
 		}
