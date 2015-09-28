@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 简介
 
 本项目旨在让初学者快速入门Activiti。
@@ -127,3 +128,7 @@ Demo提供Maven版本和no-maven版本，分别适用于会用mavne和不会用m
 ### 1.0.0（2011-10-23）鼻祖
 
 1. 第一个原始版本，当时应该只有流程部署和流程启动。。。
+=======
+# activiti-workflow
+Activiti-demo modified by Kafeitu's demo 
+>>>>>>> 344c35f9126ce8902755f9a23ec03942699ef918
