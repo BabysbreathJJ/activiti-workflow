@@ -9,7 +9,7 @@ import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.socket.TextMessage;
 
-import me.kafeitu.demo.activiti.websocket.SystemWebSocketHandler;
+import me.kafeitu.demo.activiti.web.websocket.SystemWebSocketHandler;
 
 public class TaskCreateGlobalEventListener implements ActivitiEventListener {
 

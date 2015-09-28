@@ -1,4 +1,4 @@
-package me.kafeitu.demo.activiti.websocket;
+package me.kafeitu.demo.activiti.web.websocket;
 
 import java.io.IOException;
 import java.util.ArrayList;

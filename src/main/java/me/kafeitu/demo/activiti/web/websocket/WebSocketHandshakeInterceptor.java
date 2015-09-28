@@ -1,4 +1,4 @@
-package me.kafeitu.demo.activiti.websocket;
+package me.kafeitu.demo.activiti.web.websocket;
 
 import me.kafeitu.demo.activiti.util.Constants;
 import java.util.Map;

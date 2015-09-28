@@ -531,7 +531,6 @@
 				<configuration>
 					<webAppConfig>
 						<contextPath>/${project.artifactId}</contextPath>
-
 					</webAppConfig>
 				</configuration>
 			</plugin>

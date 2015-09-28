@@ -1,4 +1,4 @@
-package me.kafeitu.demo.activiti.websocket;
+package me.kafeitu.demo.activiti.web.websocket;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
