@@ -25,8 +25,19 @@
 	z-index: 1005 !important;
 }
 
-th,td{
+th, td {
 	text-align: center;
+	color: #000000;
+}
+
+#modifyApplyContent td {
+	line-height: 2.5em;
+}
+
+#modifyApplyContent caption {
+	height: 2.5em;
+	font-size: 1.5em;
+	line-height: 2.5em;
 }
 </style>
 
@@ -52,13 +63,14 @@ th,td{
 	type="text/javascript"></script>
 </head>
 
-<body style="background-color:#EAEAEA;">
+<body style="background-color: #EAEAEA;">
 	<c:if test="${not empty message}">
 		<div id="message" class="alert alert-success">${message}</div>
 	</c:if>
 	<div
-		style="background-color: #ffffff; width: 80%; margin: 0 auto; min-height: 1000px">
-		<table style="margin: 0 auto" class="table table-bordered">
+		style="background-color: #ffffff; width: 85%; margin: 0 auto; min-height: 1000px">
+		<table width="100%" style="margin: 0 auto; color: #000000"
+			class="table table-bordered">
 			<thead>
 				<tr class="success">
 					<th>假种</th>
@@ -100,7 +112,7 @@ th,td{
 				</c:forEach>
 			</tbody>
 		</table>
-		<div style="margin: 0 auto;text-align:center;">
+		<div style="margin: 0 auto; text-align: center;">
 			<tags:pagination page="${page}" paginationSize="${page.pageSize}" />
 		</div>
 	</div>
@@ -131,7 +143,7 @@ th,td{
 		</div>
 		<hr />
 		<table id="modifyApplyContent" style="display: none">
-			<caption>调整请假内容</caption>
+			<caption style="text-align: center">调整请假内容</caption>
 			<tr>
 				<td>请假类型：</td>
 				<td><select id="leaveType" name="leaveType">
@@ -163,10 +175,10 @@ th,td{
 		<!-- table用来显示信息，方便办理任务 -->
 		<%@include file="view-form.jsp"%>
 		<hr />
-		<table>
+		<table class='table'>
 			<tr>
 				<td>实际请假开始时间：</td>
-				<td><input id="realityStartTime" /></td>
+				<td><input  id="realityStartTime" /></td>
 			</tr>
 			<tr>
 				<td>实际请假开始时间：</td>

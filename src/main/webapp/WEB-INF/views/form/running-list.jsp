@@ -53,7 +53,7 @@ td {
 </style>
 </head>
 
-<body style="background-color: #EAEAEA;">
+<body style="background-color: #EAEAEA;padding-bottom: 55px">
 	<%
 		RepositoryService repositoryService = WebApplicationContextUtils
 				.getWebApplicationContext(session.getServletContext())

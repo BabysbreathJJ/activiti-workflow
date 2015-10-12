@@ -187,8 +187,7 @@ function readFormFields(taskId, task_type, processInstanceId) {
 
 	// 读取启动时的表单
 
-	$
-			.getJSON(
+	$.getJSON(
 					ctx + '/form/dynamic/get-form/task/' + taskId
 							+ '/processInstanceId/' + processInstanceId,
 					function(datas) {
@@ -376,8 +375,7 @@ function readDelegateUser(taskId, task_type, processInstanceId) {
 
 						trs += "</select></td></tr>";
 
-						$
-								.getJSON(
+						$.getJSON(
 										ctx + '/form/dynamic/get-form/task/'
 												+ taskId
 												+ '/processInstanceId/'
@@ -388,25 +386,17 @@ function readDelegateUser(taskId, task_type, processInstanceId) {
 													+ datas.applicant
 													+ "</td>+</tr>";
 
-											$
-													.each(
-															datas.taskFormData.formProperties,
+											$.each(datas.taskFormData.formProperties,
 															function() {
-
-																var className = this.required === true ? "required"
-																		: "";
-																this.value = this.value ? this.value
-																		: "";
-																trs += "<tr>"
-																		+ createFieldHtml(
-																				this,
-																				datas,
-																				className)
+												if(this.writable == false){
+																var className = this.required === true ? "required": "";
+																this.value = this.value ? this.value: "";
+																trs += "<tr>"+ createFieldHtml(this,datas,className)
 																if (this.required === true) {
 																	trs += "<span style='color:red'>*</span>";
 																}
 																trs += "</td></tr>";
-															});
+												}});
 
 											// 添加table内容
 											$('.dynamic-form-table')

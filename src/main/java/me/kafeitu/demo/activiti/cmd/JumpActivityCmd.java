@@ -1,8 +1,5 @@
 package me.kafeitu.demo.activiti.cmd;
 
-/**
- * @author: Henry Yan
- */
 
 import org.activiti.engine.impl.interceptor.Command;
 import org.activiti.engine.impl.interceptor.CommandContext;
@@ -36,6 +33,13 @@ public class JumpActivityCmd implements Command<Object> {
 
         executionEntity.executeActivity(activity);
 
+
         return executionEntity;
     }
 }
+
+
+
+
+
+

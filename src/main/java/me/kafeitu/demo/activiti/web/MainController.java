@@ -20,6 +20,7 @@ public class MainController {
     @RequestMapping(value = "/welcome")
     public String welcome() {
         return "/main/welcome";
+//    	 return "form/dynamic/dynamic-form-process-list";
     }
 
 }

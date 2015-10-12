@@ -33,170 +33,184 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class LeaveWorkflowService {
 
-    private static Logger logger = LoggerFactory.getLogger(LeaveWorkflowService.class);
+	private static Logger logger = LoggerFactory.getLogger(LeaveWorkflowService.class);
 
-    private LeaveManager leaveManager;
+	private LeaveManager leaveManager;
 
-    private RuntimeService runtimeService;
+	private RuntimeService runtimeService;
 
-    protected TaskService taskService;
+	protected TaskService taskService;
 
-    protected HistoryService historyService;
+	protected HistoryService historyService;
 
-    protected RepositoryService repositoryService;
+	protected RepositoryService repositoryService;
 
-    @Autowired
-    private IdentityService identityService;
+	@Autowired
+	private IdentityService identityService;
 
-    /**
-     * 启动流程
-     *
-     * @param entity
-     */
-    public ProcessInstance startWorkflow(Leave entity, Map<String, Object> variables) {
-        leaveManager.saveLeave(entity);
-        logger.debug("save entity: {}", entity);
-        String businessKey = entity.getId().toString();
+	/**
+	 * 启动流程
+	 *
+	 * @param entity
+	 */
+	public ProcessInstance startWorkflow(Leave entity, Map<String, Object> variables) {
+		leaveManager.saveLeave(entity);
+		logger.debug("save entity: {}", entity);
+		String businessKey = entity.getId().toString();
 
-        ProcessInstance processInstance = null;
-        try {
-            // 用来设置启动流程的人员ID，引擎会自动把用户ID保存到activiti:initiator中
-            identityService.setAuthenticatedUserId(entity.getUserId());
+		ProcessInstance processInstance = null;
+		try {
+			// 用来设置启动流程的人员ID，引擎会自动把用户ID保存到activiti:initiator中
+			identityService.setAuthenticatedUserId(entity.getUserId());
 
-            processInstance = runtimeService.startProcessInstanceByKey("leave", businessKey, variables);
-            String processInstanceId = processInstance.getId();
-            entity.setProcessInstanceId(processInstanceId);
-            logger.debug("start process of {key={}, bkey={}, pid={}, variables={}}", new Object[]{"leave", businessKey, processInstanceId, variables});
-        } finally {
-            identityService.setAuthenticatedUserId(null);
-        }
-        return processInstance;
-    }
+			processInstance = runtimeService.startProcessInstanceByKey("leave", businessKey, variables);
+			String processInstanceId = processInstance.getId();
+			entity.setProcessInstanceId(processInstanceId);
+			logger.debug("start process of {key={}, bkey={}, pid={}, variables={}}",
+					new Object[] { "leave", businessKey, processInstanceId, variables });
+		} finally {
+			identityService.setAuthenticatedUserId(null);
+		}
+		return processInstance;
+	}
 
-    /**
-     * 查询待办任务
-     *
-     * @param userId 用户ID
-     * @return
-     */
-    @Transactional(readOnly = true)
-    public List<Leave> findTodoTasks(String userId, Page<Leave> page, int[] pageParams) {
-        List<Leave> results = new ArrayList<Leave>();
+	/**
+	 * 查询待办任务
+	 *
+	 * @param userId
+	 *            用户ID
+	 * @return
+	 */
+	@Transactional(readOnly = true)
+	public List<Leave> findTodoTasks(String userId, Page<Leave> page, int[] pageParams) {
+		List<Leave> results = new ArrayList<Leave>();
 
-        // 根据当前人的ID查询
-        TaskQuery taskQuery = taskService.createTaskQuery().taskCandidateOrAssigned(userId);
-        List<Task> tasks = taskQuery.list();
+		// 根据当前人的ID查询
+		TaskQuery taskQuery = taskService.createTaskQuery().taskCandidateOrAssigned(userId);
+		List<Task> tasks = taskQuery.list();
 
-        // 根据流程的业务ID查询实体并关联
-        for (Task task : tasks) {
-            String processInstanceId = task.getProcessInstanceId();
-            ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).active().singleResult();
-            String businessKey = processInstance.getBusinessKey();
-            if (businessKey == null) {
-                continue;
-            }
-            Leave leave = leaveManager.getLeave(new Long(businessKey));
-            leave.setTask(task);
-            leave.setProcessInstance(processInstance);
-            leave.setProcessDefinition(getProcessDefinition(processInstance.getProcessDefinitionId()));
-            results.add(leave);
-        }
+		// 根据流程的业务ID查询实体并关联
+		for (Task task : tasks) {
+			String processInstanceId = task.getProcessInstanceId();
+			ProcessInstance processInstance = runtimeService.createProcessInstanceQuery()
+					.processInstanceId(processInstanceId).active().singleResult();
+//			if (processInstance == null)
+//				System.out.println("********************error*******"+processInstanceId);
+//			else {
+//				System.out.println("********************ok*******"+processInstanceId);
+//			}
+			String businessKey = processInstance.getBusinessKey();// 获得启动流程时的业务key
 
-        page.setTotalCount(taskQuery.count());
-        page.setResult(results);
-        return results;
-    }
+			if (businessKey == null) {
+				continue;
+			}
+			Leave leave = leaveManager.getLeave(new Long(businessKey));
+			leave.setTask(task);
+			leave.setProcessInstance(processInstance);
+			leave.setProcessDefinition(getProcessDefinition(processInstance.getProcessDefinitionId()));
+			results.add(leave);
+		}
 
-    /**
-     * 读取运行中的流程
-     *
-     * @return
-     */
-    @Transactional(readOnly = true)
-    public List<Leave> findRunningProcessInstaces(Page<Leave> page, int[] pageParams) {
-        List<Leave> results = new ArrayList<Leave>();
-        ProcessInstanceQuery query = runtimeService.createProcessInstanceQuery().processDefinitionKey("leave").active().orderByProcessInstanceId().desc();
-        List<ProcessInstance> list = query.listPage(pageParams[0], pageParams[1]);
+		page.setTotalCount(taskQuery.count());
+		page.setResult(results);
+		return results;
+	}
 
-        // 关联业务实体
-        for (ProcessInstance processInstance : list) {
-            String businessKey = processInstance.getBusinessKey();
-            if (businessKey == null) {
-                continue;
-            }
-            Leave leave = leaveManager.getLeave(new Long(businessKey));
-            leave.setProcessInstance(processInstance);
-            leave.setProcessDefinition(getProcessDefinition(processInstance.getProcessDefinitionId()));
-            results.add(leave);
+	/**
+	 * 读取运行中的流程
+	 *
+	 * @return
+	 */
+	@Transactional(readOnly = true)
+	public List<Leave> findRunningProcessInstaces(Page<Leave> page, int[] pageParams) {
+		List<Leave> results = new ArrayList<Leave>();
+		ProcessInstanceQuery query = runtimeService.createProcessInstanceQuery().processDefinitionKey("leave").active()
+				.orderByProcessInstanceId().desc();
+		List<ProcessInstance> list = query.listPage(pageParams[0], pageParams[1]);
 
-            // 设置当前任务信息
-            List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstance.getId()).active().orderByTaskCreateTime().desc().listPage(0, 1);
-            leave.setTask(tasks.get(0));
-        }
+		// 关联业务实体
+		for (ProcessInstance processInstance : list) {
+			String businessKey = processInstance.getBusinessKey();
+			if (businessKey == null) {
+				continue;
+			}
+			Leave leave = leaveManager.getLeave(new Long(businessKey));
+			leave.setProcessInstance(processInstance);
+			leave.setProcessDefinition(getProcessDefinition(processInstance.getProcessDefinitionId()));
+			results.add(leave);
 
-        page.setTotalCount(query.count());
-        page.setResult(results);
-        return results;
-    }
+			// 设置当前任务信息
+			List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstance.getId()).active()
+					.orderByTaskCreateTime().desc().listPage(0, 1);
+			leave.setTask(tasks.get(0));
+		}
 
-    /**
-     * 读取已结束中的流程
-     *
-     * @return
-     */
-    @Transactional(readOnly = true)
-    public List<Leave> findFinishedProcessInstaces(Page<Leave> page, int[] pageParams) {
-        List<Leave> results = new ArrayList<Leave>();
-        HistoricProcessInstanceQuery query = historyService.createHistoricProcessInstanceQuery().processDefinitionKey("leave").finished().orderByProcessInstanceEndTime().desc();
-        List<HistoricProcessInstance> list = query.listPage(pageParams[0], pageParams[1]);
+		page.setTotalCount(query.count());
+		page.setResult(results);
+		return results;
+	}
 
-        // 关联业务实体
-        for (HistoricProcessInstance historicProcessInstance : list) {
-            String businessKey = historicProcessInstance.getBusinessKey();
-            Leave leave = leaveManager.getLeave(new Long(businessKey));
-            leave.setProcessDefinition(getProcessDefinition(historicProcessInstance.getProcessDefinitionId()));
-            leave.setHistoricProcessInstance(historicProcessInstance);
-            results.add(leave);
-        }
-        page.setTotalCount(query.count());
-        page.setResult(results);
-        return results;
-    }
+	/**
+	 * 读取已结束中的流程
+	 *
+	 * @return
+	 */
+	@Transactional(readOnly = true)
+	public List<Leave> findFinishedProcessInstaces(Page<Leave> page, int[] pageParams) {
+		List<Leave> results = new ArrayList<Leave>();
+		HistoricProcessInstanceQuery query = historyService.createHistoricProcessInstanceQuery()
+				.processDefinitionKey("leave").finished().orderByProcessInstanceEndTime().desc();
+		List<HistoricProcessInstance> list = query.listPage(pageParams[0], pageParams[1]);
 
-    /**
-     * 查询流程定义对象
-     *
-     * @param processDefinitionId 流程定义ID
-     * @return
-     */
-    protected ProcessDefinition getProcessDefinition(String processDefinitionId) {
-        ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionId(processDefinitionId).singleResult();
-        return processDefinition;
-    }
+		// 关联业务实体
+		for (HistoricProcessInstance historicProcessInstance : list) {
+			String businessKey = historicProcessInstance.getBusinessKey();
+			Leave leave = leaveManager.getLeave(new Long(businessKey));
+			leave.setProcessDefinition(getProcessDefinition(historicProcessInstance.getProcessDefinitionId()));
+			leave.setHistoricProcessInstance(historicProcessInstance);
+			results.add(leave);
+		}
+		page.setTotalCount(query.count());
+		page.setResult(results);
+		return results;
+	}
 
-    @Autowired
-    public void setLeaveManager(LeaveManager leaveManager) {
-        this.leaveManager = leaveManager;
-    }
+	/**
+	 * 查询流程定义对象
+	 *
+	 * @param processDefinitionId
+	 *            流程定义ID
+	 * @return
+	 */
+	protected ProcessDefinition getProcessDefinition(String processDefinitionId) {
+		ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
+				.processDefinitionId(processDefinitionId).singleResult();
+		return processDefinition;
+	}
 
-    @Autowired
-    public void setRuntimeService(RuntimeService runtimeService) {
-        this.runtimeService = runtimeService;
-    }
+	@Autowired
+	public void setLeaveManager(LeaveManager leaveManager) {
+		this.leaveManager = leaveManager;
+	}
 
-    @Autowired
-    public void setTaskService(TaskService taskService) {
-        this.taskService = taskService;
-    }
+	@Autowired
+	public void setRuntimeService(RuntimeService runtimeService) {
+		this.runtimeService = runtimeService;
+	}
 
-    @Autowired
-    public void setHistoryService(HistoryService historyService) {
-        this.historyService = historyService;
-    }
+	@Autowired
+	public void setTaskService(TaskService taskService) {
+		this.taskService = taskService;
+	}
 
-    @Autowired
-    public void setRepositoryService(RepositoryService repositoryService) {
-        this.repositoryService = repositoryService;
-    }
+	@Autowired
+	public void setHistoryService(HistoryService historyService) {
+		this.historyService = historyService;
+	}
+
+	@Autowired
+	public void setRepositoryService(RepositoryService repositoryService) {
+		this.repositoryService = repositoryService;
+	}
 
 }

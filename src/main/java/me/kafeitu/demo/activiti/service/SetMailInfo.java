@@ -11,7 +11,7 @@ import org.activiti.engine.identity.User;
 /**
  * 请假流程--邮件任务监听器，用于设置发送邮件时的一些变量
  *
- * @author henryyan
+ * @author 
  */
 public class SetMailInfo implements ExecutionListener {
 
@@ -27,7 +27,7 @@ public class SetMailInfo implements ExecutionListener {
 		String userName = user.getFirstName() + " " + user.getLastName();
 		execution.setVariableLocal("name", userName);
 
-		// 超时提醒时间设置，请假结束时间+1天
+		// 超时提醒时间设置，为了方便测试，设置为销假任务到达一分钟后提醒
 		// Date endDate = (Date) execution.getVariable("endDate");
 		Calendar ca = Calendar.getInstance();
 		// ca.setTime(endDate);

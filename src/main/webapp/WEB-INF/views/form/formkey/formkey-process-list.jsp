@@ -58,7 +58,7 @@ select {
 </style>
 </head>
 
-<body style="background-color: #EAEAEA;">
+<body style="background-color: #EAEAEA;padding-bottom: 55px">
 	<div
 		style="background-color: #ffffff; width: 80%; margin: 0 auto; min-height: 1000px">
 		<c:if test="${not empty message}">

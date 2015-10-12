@@ -111,7 +111,7 @@ select {
 						<td>${model.createTime}</td>
 						<td>${model.lastUpdateTime}</td>
 						<td>${model.metaInfo}</td>
-						<td width="10%"><a
+						<td width="12%"><a
 							href="${ctx}/service/editor?id=${model.id}" target="_blank">编辑</a>
 							<a href="${ctx}/workflow/model/deploy/${model.id}">部署</a> <a
 							href="${ctx}/workflow/model/export/${model.id}" target="_blank">导出</a>

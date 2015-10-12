@@ -85,7 +85,7 @@ td {
 						<td>${task.createTime }</td>
 						<td>${pi.suspended ? "已挂起" : "正常" }；<b title='流程版本号'>V:
 								${leave.processDefinition.version }</b></td>
-						<td>${task.assignee }</td>
+						<td>${task.assignee}</td>
 					</tr>
 				</c:forEach>
 			</tbody>

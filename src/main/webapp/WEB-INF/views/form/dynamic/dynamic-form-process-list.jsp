@@ -62,9 +62,9 @@ select {
 </style>
 </head>
 
-<body style="background-color: #EAEAEA;">
+<body style="background-color: #EAEAEA;padding-bottom: 55px">
 	<div
-		style="background-color: #ffffff; width: 80%; margin: 0 auto; min-height: 1000px">
+		style="background-color: #ffffff; width: 95%; margin: 0 auto; min-height: 1000px">
 		<%
 			response.setHeader("contentType", "text/html;charset=UTF-8");
 		%>
@@ -72,9 +72,9 @@ select {
 			<div id="message" class="alert alert-success">${message}</div>
 			<!-- 自动隐藏提示信息 -->
 			<script type="text/javascript">
-				/* setTimeout(function() {
+				 setTimeout(function() {
 					$('#message').hide('slow');
-				}, 5000); */
+				}, 5000); 
 			</script>
 		</c:if>
 		<table width="100%" style="margin: 0 auto"
@@ -97,13 +97,13 @@ select {
 						<td class='process-id'>${process.id }</td>
 						<td>${process.deploymentId }</td>
 						<td class='process-name'>${process.name }</td>
-						<td>${process.key }</td>
+						<td class='process-key'>${process.key }</td>
 						<td>${process.version }</td>
 						<td><a target="_blank"
 							href='${ctx }/workflow/resource/read?processDefinitionId=${process.id}&resourceType=xml'>${process.resourceName }</a></td>
 						<td><a target="_blank"
 							href='${ctx }/workflow/resource/read?processDefinitionId=${process.id}&resourceType=image'>${process.diagramResourceName }</a></td>
-						<td><a class="startup-process"> 启动</a></td>
+						<td width='8%'><a class="startup-process"> 启动</a></td>
 						<td style="display: none" class='process-type'>${page.type}</td>
 					</tr>
 				</c:forEach>

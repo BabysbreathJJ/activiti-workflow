@@ -87,6 +87,23 @@
 		<!--<property name="history" value="full"/> -->
 		<property name="processDefinitionCacheLimit" value="10" />
 
+
+		<!-- 前置命令拦截器集合属性 -->
+		<property name="customPreCommandInterceptors">
+			<list>
+				<bean class="me.kafeitu.demo.activiti.cmd.MyPreCommandInterceptor"></bean>
+			</list>
+		</property>
+
+		<!-- 后置命令拦截器集合属性 -->
+		<property name="customPostCommandInterceptors">
+			<list>
+				<bean class="me.kafeitu.demo.activiti.cmd.MyPostCommandInterceptor"></bean>
+			</list>
+		</property>
+
+
+
 		<!-- mail -->
 		<property name="mailServerHost" value="smtp.qq.com" />
 		<property name="mailServerUsername" value="296803061@qq.com" />
@@ -129,13 +146,13 @@
 						<ref bean="variableCreateListener" />
 					</list>
 				</entry>
-			 <entry key="TASK_ASSIGNED">
+				<entry key="TASK_ASSIGNED">
 					<list>
-					<!-- 新任务提醒 -->
+						<!-- 新任务提醒 -->
 						<bean
 							class="me.kafeitu.demo.activiti.events.TaskCreateGlobalEventListener" />
 					</list>
-				</entry> 
+				</entry>
 			</map>
 
 		</property>

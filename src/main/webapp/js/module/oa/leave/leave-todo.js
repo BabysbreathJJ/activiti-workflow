@@ -4,18 +4,20 @@
 $(function() {
 
     // 签收
-    $('.claim').button({
-        icons: {
-            primary: 'ui-icon-person'
-        }
-    });
+//    $('.claim').button({
+//        icons: {
+//            primary: 'ui-icon-person'
+//        }
+//    });
     
     // 办理
-    $('.handle').button({
-        icons: {
-            primary: 'ui-icon-comment'
-        }
-    }).click(handle);
+//    $('.handle').button({
+//        icons: {
+//            primary: 'ui-icon-comment'
+//        }
+//    }).click(handle);
+	
+	$('.handle').click(handle);
     
     // 跟踪
     $('.trace').click(graphTrace);
@@ -124,8 +126,8 @@ function complete(taskId, variables) {
  */
 var handleOpts = {
 	deptLeaderAudit: {
-		width: 300,
-		height: 300,
+		width: 800,
+		height: 500,
 		open: function(id) {
 			
 			// 打开对话框的时候读取请假内容
@@ -270,7 +272,7 @@ var handleOpts = {
 			// 打开对话框的时候读取请假内容
 			loadDetailWithTaskVars.call(this, id, taskId, function(data) {
 				// 显示驳回理由
-				$('.info').show().html("<b>领导：</b>" + (data.variables.leaderBackReason || "") + "<br/><b>HR：</b>" + (data.variables.hrBackReason || ""));
+				$('.info').show().html("<b font-size:2em>驳回理由：</b>" + (data.variables.leaderBackReason || "") + "<br/><b>HR：</b>" + (data.variables.hrBackReason || ""));
 				
 				// 读取原请假信息
 				$('#modifyApplyContent #leaveType option[value=' + data.leaveType + ']').attr('selected', true);
@@ -400,6 +402,8 @@ function handle() {
 		},
 		buttons: handleOpts[tkey].btns
 	});
+	
+	$('button').attr('class', 'btn btn-success');
 }
 
 Date.prototype.format = function(format) {

@@ -17,7 +17,10 @@ function showStartupProcessDialog() {
 	var $ele = $(this);
 	var formType = $ele.parents('tr').find('.process-id').text();
 	var process_type = $ele.parents('tr').find('.process-type').text();
+	var process_key = $ele.parents('tr').find('.process-key').text();
+
 	if (formType.indexOf('formkey') > 0) {
+
 		$(
 				'<div/>',
 				{
@@ -40,9 +43,53 @@ function showStartupProcessDialog() {
 				click : sendStartupRequestFormKey
 			} ]
 		});
-
+		$('button').attr('class', 'btn btn-success');
+	} else if (formType.indexOf("message-start-event") >= 0) {
+		$(
+				'<div/>',
+				{
+					'class' : 'dynamic-form-dialog',
+					title : '启动流程['
+							+ $ele.parents('tr').find('.process-name').text()
+							+ ']',
+					html : '<span class="ui-loading">正在读取表单……</span>'
+				}).dialog({
+			modal : true,
+			width : 600,
+			height : $.common.window.getClientHeight() / 2,
+			open : function() {
+				readMessage.call(this, formType, process_type);
+			},
+			buttons : [ {
+				text : '启动流程',
+				click : sendStartupRequest
+			} ]
+		});
+		$('button').attr('class', 'btn btn-success');
+	} else if (formType.indexOf("message-intermediate-event-catch") >= 0) {
+		$(
+				'<div/>',
+				{
+					'class' : 'dynamic-form-dialog',
+					title : '启动流程['
+							+ $ele.parents('tr').find('.process-name').text()
+							+ ']',
+					html : '<span class="ui-loading">正在读取表单……</span>'
+				}).dialog({
+			modal : true,
+			width : 600,
+			height : $.common.window.getClientHeight() / 2,
+			open : function() {
+				readMessageIntermediate.call(this, process_key, process_type);
+			},
+			buttons : [ {
+				text : '启动流程',
+				click : sendStartupRequest
+			} ]
+		});
 		$('button').attr('class', 'btn btn-success');
 	} else {
+
 		$(
 				'<div/>',
 				{
@@ -69,6 +116,32 @@ function showStartupProcessDialog() {
 		$('button').attr('class', 'btn btn-success');
 
 	}
+	$('button').attr('class', 'btn btn-success');
+
+}
+
+function readMessage(process_key, process_type) {
+	var dialog = this;
+	$('.dynamic-form-dialog')
+			.html(
+					"<form class='dynamic-form' method='post'><p>这是一个消息开始事件</p></form>");
+	var $form = $('.dynamic-form');
+	$form.attr('action', ctx + '/form/dynamic/start-process/message/'
+			+ process_key + '/' + process_type);
+	$form.validate($.extend({}, $.common.plugin.validator));
+
+}
+
+function readMessageIntermediate(process_key, process_type) {
+	var dialog = this;
+	$('.dynamic-form-dialog')
+			.html(
+					"<form class='dynamic-form' method='post'><p>这是一个消息中间件捕获流程,启动流程后，发送消息</p></form>");
+	var $form = $('.dynamic-form');
+	
+	$form.attr('action', ctx + '/form/dynamic/start-process/message/'
+			+ process_key + '/' + process_type);
+	$form.validate($.extend({}, $.common.plugin.validator));
 
 }
 
@@ -90,13 +163,13 @@ function readFormFields(processDefinitionId, process_type) {
 			+ processDefinitionId + '/' + process_type);
 
 	// 添加隐藏域
-//	if ($('#processType').length == 0) {
-//		$('<input/>', {
-//			'id' : 'processType',
-//			'name' : 'processType',
-//			'type' : 'hidden'
-//		}).val(processType).appendTo($form);
-//	}
+	// if ($('#processType').length == 0) {
+	// $('<input/>', {
+	// 'id' : 'processType',
+	// 'name' : 'processType',
+	// 'type' : 'hidden'
+	// }).val(processType).appendTo($form);
+	// }
 
 	// 读取启动时的表单
 	$.getJSON(ctx + '/form/dynamic/get-form/start/' + processDefinitionId,

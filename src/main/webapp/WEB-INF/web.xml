@@ -58,7 +58,14 @@
 			</param-value>
 		</init-param>
 	</servlet>
+	
+	<!-- Catch all service requests -->
+	<servlet-mapping>
+		<servlet-name>ExplorerRestletServlet</servlet-name>
+		<url-pattern>/service/*</url-pattern>
+	</servlet-mapping>
 
+	<!-- Restlet adapter -->
 	<servlet>
 		<servlet-name>RestletServlet</servlet-name>
 		<servlet-class>org.restlet.ext.servlet.ServerServlet</servlet-class>
@@ -69,6 +76,12 @@
 			</param-value>
 		</init-param>
 	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>RestletServlet</servlet-name>
+		<url-pattern>/rest/*</url-pattern>
+	</servlet-mapping>
+	
 
 	<!-- Filter 定义 -->
 	<!-- Character Encoding filter -->
@@ -110,24 +123,16 @@
 			<param-value>/WEB-INF/spring-mvc.xml</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
-	<!-- 	<async-supported>true</async-supported> -->
+		<!-- <async-supported>true</async-supported> -->
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>springServlet</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 
-	<!-- Catch all service requests -->
-	<servlet-mapping>
-		<servlet-name>ExplorerRestletServlet</servlet-name>
-		<url-pattern>/service/*</url-pattern>
-	</servlet-mapping>
+	
 
-	<servlet-mapping>
-		<servlet-name>RestletServlet</servlet-name>
-		<url-pattern>/rest/*</url-pattern>
-	</servlet-mapping>
-
+	
 	<!-- session超时定义,单位为分钟 -->
 	<session-config>
 		<session-timeout>20</session-timeout>

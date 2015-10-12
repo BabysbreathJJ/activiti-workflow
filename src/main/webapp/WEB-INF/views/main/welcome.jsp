@@ -62,9 +62,9 @@ td {
 <script src="${ctx }/js/module/main/welcome-portlet.js"
 	type="text/javascript"></script>
 </head>
-<body style="background-color: #EAEAEA;">
+<body style="background-color: #EAEAEA;width:100%">
 	<div
-		style="width: 80%; background-color: #ffffff; margin: 0 auto; text-align: center">
+		style="width: 100%; background-color: #ffffff; margin: 0 auto; text-align: center">
 		<table class="table table-bordered" id="todoTasks" style="color: #000000">
 
 		</table>

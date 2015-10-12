@@ -98,7 +98,8 @@
 					<table>
 						<tr style="margin-bottom: 20px">
 							<td width="40%" class="login-text">用户名：</td>
-							<td><input id="username" name="username" class="login-input"
+							<td><input type='text' id="username" name="username" class="login-input"
+							style="margin-left: 20px"
 								placeholder="用户名" /></td>
 						</tr>
 						<tr>

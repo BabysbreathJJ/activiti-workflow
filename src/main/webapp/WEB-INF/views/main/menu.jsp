@@ -3,7 +3,13 @@
 
 <ul id="css3menu" class="navbar-nav">
 
-	<li class="topfirst"><a rel="main/welcome">首页</a></li>
+	<!-- 	<li class="topfirst"><a rel="main/welcome">首页</a></li> -->
+	<li><a rel="#">权限设置</a>
+		<ul>
+			<li><a rel="identity/user/list">用户管理</a></li>
+			<li><a rel="identity/group/list">组管理</a></li>
+		</ul></li>
+
 	<li><a rel="#">请假（普通表单）</a>
 		<ul>
 			<li><a rel="oa/leave/apply">请假申请(普通)</a></li>
@@ -13,7 +19,7 @@
 		</ul></li>
 	<li><a rel="#">动态表单</a>
 		<ul>
-			<li><a rel="form/dynamic/process-list/singleype">流程列表(动态)</a></li>
+			<li><a rel="form/dynamic/process-list/singleType">流程列表(动态)</a></li>
 			<li><a rel="form/dynamic/task/list/singleType">任务列表(动态)</a></li>
 			<li><a
 				rel="form/dynamic/process-instance/running/list/singleType">运行中流程表(动态)</a></li>

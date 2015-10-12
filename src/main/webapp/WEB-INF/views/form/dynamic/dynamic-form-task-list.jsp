@@ -75,9 +75,9 @@ select {
 <%
 	response.setHeader("contentType", "text/html;charset=utf-8");
 %>
-<body style="background-color: #EAEAEA;">
+<body style="background-color: #EAEAEA; padding-bottom: 55px">
 	<div
-		style="background-color: #ffffff; width: 80%; margin: 0 auto; min-height: 1000px">
+		style="background-color: #ffffff; width: 90%; margin: 0 auto; padding-bottom: 25px;">
 		<c:if test="${not empty message}">
 			<div id="message" class="alert alert-success">${message}</div>
 			<!-- 自动隐藏提示信息 -->
@@ -121,27 +121,19 @@ select {
 								<a class="claim"
 									href="${ctx}/form/dynamic/task/claim/${task.id}/${page.type}">签收</a>
 
-							</c:if> <%-- <c:choose> --%>
-
-								<c:if test="${not empty task.assignee }">
-									<c:if test="${not empty task.owner }">
-										<a class="handle" tkey='${task.taskDefinitionKey }'
-											tname='${task.name }' tid='${task.id }' href="#">办理</a>
-									</c:if>
+							</c:if><c:if test="${not empty task.assignee }">
+								<c:if test="${not empty task.owner }">
+									<a class="handle" tkey='${task.taskDefinitionKey }'
+										tname='${task.name }' tid='${task.id }' href="#">办理</a>
 								</c:if>
-								<c:if test="${empty task.owner}">
-									<c:if test="${ not empty task.assignee}">
-										<a class="handle" tkey='${task.taskDefinitionKey }'
-											tname='${task.name }' tid='${task.id }' href="#">办理</a>&nbsp;|
+							</c:if> <c:if test="${empty task.owner}">
+								<c:if test="${ not empty task.assignee}">
+									<a class="handle" tkey='${task.taskDefinitionKey }'
+										tname='${task.name }' tid='${task.id }' href="#">办理</a>&nbsp;|
 										<a class="taskDelegate" tkey='${task.taskDefinitionKey }'
-											tname='${task.name }' tid='${task.id }' href="#">请人代办</a>
-									</c:if>
+										tname='${task.name }' tid='${task.id }' href="#">请人代办</a>
 								</c:if>
-							<%-- </c:choose> --%> <%-- <c:if test="${not empty task.assignee }">
-								<a class="handle" tkey='${task.taskDefinitionKey }'
-									tname='${task.name }' tid='${task.id }' href="#">办理</a>
-
-							</c:if> --%></td>
+							</c:if> </td>
 
 						<td style="display: none" class='task-type'>${page.type}</td>
 					</tr>

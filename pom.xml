@@ -446,6 +446,17 @@
 			<version>${jetty.version}</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+	        <groupId>org.eclipse.jetty</groupId>
+	        <artifactId>jetty-websocket</artifactId>
+	        <version>${jetty.version}</version>
+	    </dependency>
+	    <dependency>
+	        <groupId>org.eclipse.jetty</groupId>
+	        <artifactId>jetty-server</artifactId>
+	        <version>${jetty.version}</version>
+	    </dependency>
+		
 		<!-- TEST end -->
 	</dependencies>
 
@@ -466,6 +477,7 @@
 					<source>${jdk.version}</source>
 					<target>${jdk.version}</target>
 					<showWarnings>true</showWarnings>
+					<!-- <encoding>UTF-8</encoding> -->
 				</configuration>
 			</plugin>
 
@@ -479,6 +491,7 @@
 					<additionalProjectnatures>
 						<projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
 					</additionalProjectnatures>
+					<!-- <encoding>UTF-8</encoding> -->
 				</configuration>
 			</plugin>
 

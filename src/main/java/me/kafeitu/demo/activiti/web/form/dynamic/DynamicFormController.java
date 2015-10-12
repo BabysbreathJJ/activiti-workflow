@@ -27,6 +27,7 @@ import org.activiti.engine.impl.form.StartFormDataImpl;
 import org.activiti.engine.impl.form.TaskFormDataImpl;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.repository.ProcessDefinitionQuery;
+import org.activiti.engine.runtime.Execution;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.runtime.ProcessInstanceQuery;
 import org.activiti.engine.task.DelegationState;
@@ -177,10 +178,12 @@ public class DynamicFormController {
 		taskFormData.setTask(null);
 
 		result.put("taskFormData", taskFormData);
+
 		/*
 		 * 读取enum类型数据，用于下拉框
 		 */
 		List<FormProperty> formProperties = taskFormData.getFormProperties();
+
 		for (FormProperty formProperty : formProperties) {
 			Map<String, String> values = (Map<String, String>) formProperty.getType().getInformation("values");
 			if (values != null) {
@@ -190,6 +193,7 @@ public class DynamicFormController {
 				}
 
 				result.put(formProperty.getId(), values);
+
 			}
 		}
 
@@ -287,6 +291,53 @@ public class DynamicFormController {
 			formProperties.put("applyUser", user.getId());
 			processInstance = formService.submitStartFormData(processDefinitionId, formProperties);
 			logger.debug("start a processinstance: {}", processInstance);
+		} finally {
+			identityService.setAuthenticatedUserId(null);
+		}
+		redirectAttributes.addFlashAttribute("message", "启动成功，流程ID：" + processInstance.getId());
+		if (allType.equals("allType"))
+			return "redirect:/form/dynamic/process-list/allType";
+		else
+			return "redirect:/form/dynamic/process-list/singleType";
+	}
+
+	/**
+	 * 提交消息启动流程
+	 */
+	@RequestMapping(value = "start-process/message/{processDefinitionKey}/{allType}")
+	public String startMessageProcessInstance(@PathVariable("processDefinitionKey") String processDefinitionKey,
+			@PathVariable("allType") String allType, RedirectAttributes redirectAttributes,
+			HttpServletRequest request) {
+
+		logger.debug("start message process: {}", processDefinitionKey);
+
+		User user = UserUtil.getUserFromSession(request.getSession());
+		// 用户未登录不能操作，实际应用使用权限框架实现，例如Spring Security、Shiro等
+		if (user == null || StringUtils.isBlank(user.getId())) {
+			return "redirect:/login?timeout=true";
+		}
+		ProcessInstance processInstance = null;
+		try {
+			identityService.setAuthenticatedUserId(user.getId());
+			if (processDefinitionKey.indexOf("intermediate") >= 0) {
+				processInstance = runtimeService.startProcessInstanceByKey(processDefinitionKey);
+						
+				List<Execution> executions = runtimeService
+					      .createExecutionQuery()
+					      .processDefinitionKey(processDefinitionKey)
+					      .messageEventSubscriptionName("msg") // 监听msg message的东西，在本例里是一个intermediate message catch event
+					      .list();
+					  for(Execution execution : executions) {
+					    runtimeService.messageEventReceived("msg", execution.getId());
+					  }
+
+				
+			} else
+				System.out.println("");
+			System.out.println("********************msg-text**************");
+				processInstance = runtimeService.startProcessInstanceByMessage("msg-test");
+				System.out.println("");
+			logger.debug("**************message************: {}", processInstance);
 		} finally {
 			identityService.setAuthenticatedUserId(null);
 		}

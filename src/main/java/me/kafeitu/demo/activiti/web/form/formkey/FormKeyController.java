@@ -70,7 +70,7 @@ public class FormKeyController {
 	private ManagementService managementService;
 
 	/**
-	 * 动态form流程列表
+	 * form流程列表
 	 *
 	 * @param model
 	 * @return
@@ -81,7 +81,7 @@ public class FormKeyController {
 		Page<ProcessDefinition> page = new Page<ProcessDefinition>(PageUtil.PAGE_SIZE);
 		int[] pageParams = PageUtil.init(page, request);
 		/*
-		 * 只读取动态表单：leave-formkey
+		 * 表单：leave-formkey
 		 */
 		ProcessDefinitionQuery query = repositoryService.createProcessDefinitionQuery()
 				.processDefinitionKey("leave-formkey").active().orderByDeploymentId().desc();
@@ -221,7 +221,7 @@ public class FormKeyController {
 		if (allType.equals("allType"))
 			return "redirect:/form/dynamic/process-list/allType";
 		else
-			return "redirect:/form/formkey/process-list/singleType";
+			return "redirect:/form/formkey/process-list";
 	}
 
 	/**
