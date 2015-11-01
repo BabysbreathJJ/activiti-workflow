@@ -45,7 +45,7 @@ function readForm(processDefinitionId) {
 	// 读取启动时的表单
 	$.get(ctx + '/form/formkey/get-form/start/' + processDefinitionId, function(form) {
 		// 获取的form是字符行，html格式直接显示在对话框内就可以了，然后用form包裹起来
-		$(dialog).html(form).wrap("<form class='formkey-form' method='post' />");
+		$(dialog).html(form).wrap("<form class='formkey-form form-horizontal' method='post'/>");
 
 		var $form = $('.formkey-form');
 

@@ -112,7 +112,7 @@ td {
 							href='${ctx }/workflow/resource/read?processDefinitionId=${process.id}&resourceType=xml'>${process.resourceName }</a></td>
 						<td><a target="_blank"
 							href='${ctx }/workflow/resource/read?processDefinitionId=${process.id}&resourceType=image'>${process.diagramResourceName }</a></td>
-						<td>${deployment.deploymentTime }</td>
+						<td width="9%">${deployment.deploymentTime }</td>
 						<td width="8%">${process.suspended}|<c:if
 								test="${process.suspended }">
 								<a href="processdefinition/update/active/${process.id}">激活</a>
@@ -120,9 +120,10 @@ td {
 								<a href="processdefinition/update/suspend/${process.id}">挂起</a>
 							</c:if>
 						</td>
-						<td width="10%"><a
-							href='${ctx }/workflow/process/delete?deploymentId=${process.deploymentId}'>删除</a>
+						<td width="15%"><a
+							href='${ctx }/workflow/process/delete?deploymentId=${process.deploymentId}'>删除</a>|
 							<a href='${ctx }/workflow/process/convert-to-model/${process.id}'>转换为Model</a>
+							
 						</td>
 					</tr>
 				</c:forEach>

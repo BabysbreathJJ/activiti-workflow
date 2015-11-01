@@ -1,0 +1,15 @@
+
+							<fieldset>
+
+    <div class="control-group">
+										<!-- Text -->
+										<label class="control-label">李菁菁</label>
+										<div class="controls">
+											<input type="text" title="李菁菁" value="" class="" leipiplugins="text_input" name="name">
+										</div>
+
+									</div>
+
+    </fieldset>
+
+						

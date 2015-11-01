@@ -146,7 +146,7 @@ public class LeaveController {
     public String claim(@PathVariable("id") String taskId, HttpSession session, RedirectAttributes redirectAttributes) {
         String userId = UserUtil.getUserFromSession(session).getId();
         taskService.claim(taskId, userId);
-        redirectAttributes.addFlashAttribute("message", "任务已签收");
+        redirectAttributes.addFlashAttribute("message", "任务"+taskId+"已签收");
         return "redirect:/oa/leave/list/task";
     }
 

@@ -2,12 +2,18 @@ package me.kafeitu.demo.activiti.web.workflow;
 
 import java.io.ByteArrayInputStream;
 import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import me.kafeitu.demo.activiti.util.Page;
+import me.kafeitu.demo.activiti.util.PageUtil;
+import me.kafeitu.demo.activiti.util.WorkflowUtils;
+
 import org.activiti.bpmn.converter.BpmnXMLConverter;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.editor.constants.ModelDataJsonConstants;
@@ -15,11 +21,13 @@ import org.activiti.editor.language.json.converter.BpmnJsonConverter;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.Model;
+import org.activiti.engine.repository.ProcessDefinition;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,10 +54,15 @@ public class ModelController {
      * 模型列表
      */
     @RequestMapping(value = "list")
-    public ModelAndView modelList() {
+    public ModelAndView modelList(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("workflow/model-list");
-        List<Model> list = repositoryService.createModelQuery().list();
-        mav.addObject("list", list);
+        Page<Model> page = new Page<Model>(PageUtil.PAGE_SIZE);
+		int[] pageParams = PageUtil.init(page, request);
+        List<Model> list = repositoryService.createModelQuery().listPage(pageParams[0], pageParams[1]);
+        
+        page.setTotalCount(list.size());
+		page.setResult(list);
+		mav.addObject("page", page);
         return mav;
     }
 
@@ -102,6 +115,7 @@ public class ModelController {
 
             String processName = modelData.getName() + ".bpmn20.xml";
             Deployment deployment = repositoryService.createDeployment().name(modelData.getName()).addString(processName, new String(bpmnBytes)).deploy();
+            
             redirectAttributes.addFlashAttribute("message", "部署成功，部署ID=" + deployment.getId());
         } catch (Exception e) {
             logger.error("根据模型部署流程失败：modelId={}", modelId, e);

@@ -9,7 +9,7 @@ public class MyPreCommandInterceptor extends AbstractCommandInterceptor {
 	@Override
 	public <T> T execute(CommandConfig config, Command<T> command) {
 		// TODO Auto-generated method stub
-		System.out.println("Ç°ÖÃÀ¹½ØÆ÷->" + command);
+		System.out.println("Ç°ÖÃÃüÁîÀ¹½ØÆ÷->" + command);
 		return next.execute(config, command);
 	}
 }

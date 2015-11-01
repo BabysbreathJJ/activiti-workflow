@@ -62,7 +62,7 @@ function readFormKey(taskId, processInstanceId) {
 			+ processInstanceId, function(form) {
 		// 获取的form是字符行，html格式直接显示在对话框内就可以了，然后用form包裹起来
 		$(dialog).html(form.formData).wrap(
-				"<form class='formkey-form' method='post' />");
+				"<form class='formkey-form form-horizontal' method='post' />");
 
 		var $form = $('.formkey-form');
 
@@ -155,7 +155,7 @@ function readDelegateUserFormKey(taskId, processInstanceId) {
 				+ '/processInstanceId/' + processInstanceId, function(form) {
 			// 获取的form是字符行，html格式直接显示在对话框内就可以了，然后用form包裹起来
 			$(dialog).html(form.formData).wrap(
-					"<form class='formkey-form' method='post' />");
+					"<form class='formkey-form form-horizontal' method='post' />");
 
 			var $form = $('.formkey-form');
 

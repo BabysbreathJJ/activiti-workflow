@@ -12,6 +12,10 @@ import org.eclipse.jetty.websocket.WebSocketServlet;
 @WebServlet("/ws/my")
 public class MyWebSocketServlet extends WebSocketServlet{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static List<MyWebSocket> socketList = new ArrayList<MyWebSocket>();
 	
 	@Override

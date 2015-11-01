@@ -75,7 +75,7 @@ select {
 	<div
 		style="background-color: #ffffff; width: 100%; margin: 0 auto; min-height: 1000px">
 		<c:if test="${not empty message}">
-			<div class="ui-widget">
+			<div class="ui-widget" id="message">
 				<div class="ui-corner-all"
 					style="margin-top: 20px; padding: 0 .7em;" >
 					<p class="alert alert-success">
@@ -83,6 +83,11 @@ select {
 							style="float: left; margin-right: .3em;"></span> <strong>提示：</strong>${message}</p>
 				</div>
 			</div>
+			<script type="text/javascript">
+				setTimeout(function() {
+					$('#message').hide('slow');
+				}, 5000);
+			</script>
 		</c:if>
 		<div style="text-align: right">
 			<button id="create" style="margin-right: 20px; width: 100px">创建</button>
@@ -102,7 +107,7 @@ select {
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach items="${list }" var="model">
+				<c:forEach items="${page.result}" var="model">
 					<tr>
 						<td>${model.id }</td>
 						<td>${model.key }</td>
@@ -113,13 +118,23 @@ select {
 						<td>${model.metaInfo}</td>
 						<td width="12%"><a
 							href="${ctx}/service/editor?id=${model.id}" target="_blank">编辑</a>
-							<a href="${ctx}/workflow/model/deploy/${model.id}">部署</a> <a
-							href="${ctx}/workflow/model/export/${model.id}" target="_blank">导出</a>
+							<c:if test="${fn:contains(model.key,'formkey')}">
+							<a  href="${ctx}/form/formkey/form-design?modelId=${model.id}&modelKey=${model.key}">表单设计</a>
+							</c:if>
+							<c:if test="${!fn:contains(model.key,'formkey')}">
+							<a href="${ctx}/workflow/model/deploy/${model.id}">部署</a>
+							</c:if>
+							
+							<a href="${ctx}/workflow/model/export/${model.id}" target="_blank">导出</a>
+							
 							<a href="${ctx}/workflow/model/delete/${model.id}">删除</a></td>
 					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
+		<div style="margin: 0 auto; text-align: center;">
+			<tags:pagination page="${page}" paginationSize="${page.pageSize}" />
+		</div>
 		<div id="createModelTemplate" title="创建模型" class="template">
 			<form id="modelForm" action="${ctx}/workflow/model/create"
 				target="_blank" method="post">

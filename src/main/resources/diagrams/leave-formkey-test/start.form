@@ -1,0 +1,28 @@
+<table border="1" class="table table-hover">
+	<tr>
+		<td width='30%' style='text-align:right;vertical-align:middle'>请假类型：</td>
+		<td style='text-align:left;padding-left:15px;vertical-align:middle'>
+			<select id="leaveType" name="fp_leaveType">
+				<option>公休</option>
+				<option>病假</option>
+				<option>调休</option>
+				<option>事假</option>
+				<option>婚假</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td width='30%' style='text-align:right;vertical-align:middle'>开始时间：</td>
+		<td style='text-align:left;padding-left:15px;vertical-align:middle'><input type="text" id="startTime" name="fp_startTime" class="datetime required" /></td>
+	</tr>
+	<tr>
+		<td width='30%' style='text-align:right;vertical-align:middle'>结束时间：</td>
+		<td style='text-align:left;padding-left:15px;vertical-align:middle'><input type="text" id="endTime" name="fp_endTime" class="datetime required" /></td>
+	</tr>
+	<tr>
+		<td width='30%' style='text-align:right;vertical-align:middle'>请假原因：</td>
+		<td style='text-align:left;padding-left:15px;vertical-align:middle'>
+			<textarea id="reason" name="fp_reason" style="resize:none; width:200px"></textarea>
+		</td>
+	</tr>
+</table>

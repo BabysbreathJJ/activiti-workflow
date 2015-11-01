@@ -2,9 +2,6 @@ package me.kafeitu.demo.activiti.web.websocket;
 
 import java.io.IOException;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.eclipse.jetty.websocket.WebSocket;
 import org.eclipse.jetty.websocket.WebSocket.OnTextMessage;
 
 public class MyWebSocket implements OnTextMessage {

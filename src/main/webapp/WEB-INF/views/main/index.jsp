@@ -22,10 +22,10 @@
 <title>Activiti-演示系统</title>
 <%@ include file="/common/include-base-styles.jsp"%>
 <%@ include file="/common/include-jquery-ui-theme.jsp"%>
-<link rel="stylesheet" type="text/css" href="${ctx }/css/menu.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/css/menu.css" />
 
 <%@ include file="/common/include-custom-styles.jsp"%>
-<link href="${ctx }/css/main.css" type="text/css" rel="stylesheet" />
+<link href="${ctx}/css/main.css" type="text/css" rel="stylesheet" />
 <style type="text/css">
 .ui-tabs-panel {
 	height: 100%;
@@ -66,8 +66,7 @@
 	type="text/javascript"></script>
 <script src='${ctx }/js/common/bootstrap.js' type="text/javascript"></script>
 <script type="text/javascript">
-	$(document)
-			.ready(
+	$(document).ready(
 					function() {
 
 						$("#newMessages").hide();
@@ -75,26 +74,34 @@
 						$("#closeText").click(function() {
 							$("#newMessages").hide();
 						});
+						
 
-						var ws = new WebSocket(
-								"ws://localhost:8080/kft-activiti-demo/ws/my?username="
-										+ "${user.id}");
-						ws.onopen = function() {
-							/* alert('open~~~~~~~~'); */
-						};
-						ws.onclose = function() {
-							alert('close~~~~~~~');
-						};
-						ws.onmessage = function(evt) {
-							/* alert(evt.data);  */
+						function setupWebSocket(){
+							var ws = new WebSocket(
+									"ws://localhost:8080/kft-activiti-demo/ws/my?username="
+											+ "${user.id}");
+							ws.onopen = function() {
+								/* alert('open~~~~~~~~'); */
+							};
+							ws.onclose = function() {
+								/* alert('close~~~~~~~'); */
+								setTimeOut(setupWebSocket,1000);
+							};
+							ws.onmessage = function(evt) {
+								/* alert(evt.data);  */
 
-							var taskUrl = "<span><a target='_blank' href="+ ctx+"/form/dynamic/task/list/allType><span style='color:#5cb48e'>任务详情</span></a></span>";
+								var taskUrl = "<span><a target='_blank' href="+ ctx+"/form/dynamic/task/list/allType><span style='color:#5cb48e'>任务详情</span></a></span>";
 
-							var myMessage = evt.data + taskUrl;
-							$('#messages').html(myMessage);
-							$("#newMessages").show();
-						};
+								var myMessage = evt.data + taskUrl;
+								$('#messages').html(myMessage);
+								$("#newMessages").show();
+							};
+								
+						}
 
+						setupWebSocket();
+
+						
 						/* function getAutoDelegateTasks() {
 
 							$.ajax({

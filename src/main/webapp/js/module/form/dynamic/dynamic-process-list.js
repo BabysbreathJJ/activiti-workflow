@@ -285,7 +285,7 @@ function readFormKey(processDefinitionId) {
 			function(form) {
 				// 获取的form是字符行，html格式直接显示在对话框内就可以了，然后用form包裹起来
 				$(dialog).html(form).wrap(
-						"<form class='formkey-form' method='post' />");
+						"<form class='formkey-form form-horizontal' method='post' />");
 
 				var $form = $('.formkey-form');
 
@@ -294,13 +294,18 @@ function readFormKey(processDefinitionId) {
 						+ processDefinitionId + '/allType');
 
 				// 初始化日期组件
-				$form.find('.datetime').datetimepicker({
-					stepMinute : 5
-				});
-				$form.find('.date').datepicker();
+				if($form.hasClass('.datetime')){
+					$form.find('.datetime').datetimepicker({
+						stepMinute : 5
+					});
+				}
+				if($form.hasClass('.date')){
+					$form.find('.date').datepicker();
+				}
+				
 
 				// 表单验证
-				$form.validate($.extend({}, $.common.plugin.validator));
+//				$form.validate($.extend({}, $.common.plugin.validator));
 			});
 }
 
@@ -310,7 +315,6 @@ function readFormKey(processDefinitionId) {
  * @return {[type]} [description]
  */
 function sendStartupRequestFormKey() {
-	if ($(".formkey-form").valid()) {
+	
 		$('.formkey-form').submit();
-	}
 }

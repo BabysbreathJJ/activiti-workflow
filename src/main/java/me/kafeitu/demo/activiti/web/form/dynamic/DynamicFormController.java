@@ -294,7 +294,7 @@ public class DynamicFormController {
 		} finally {
 			identityService.setAuthenticatedUserId(null);
 		}
-		redirectAttributes.addFlashAttribute("message", "启动成功，流程ID：" + processInstance.getId());
+		redirectAttributes.addFlashAttribute("message", "启动成功，流程ID为：" + processInstance.getId());
 		if (allType.equals("allType"))
 			return "redirect:/form/dynamic/process-list/allType";
 		else
@@ -332,16 +332,17 @@ public class DynamicFormController {
 					  }
 
 				
-			} else
+			} else{
 				System.out.println("");
 			System.out.println("********************msg-text**************");
-				processInstance = runtimeService.startProcessInstanceByMessage("msg-test");
+				processInstance = runtimeService.startProcessInstanceByMessage("msg");
 				System.out.println("");
 			logger.debug("**************message************: {}", processInstance);
+			}
 		} finally {
 			identityService.setAuthenticatedUserId(null);
 		}
-		redirectAttributes.addFlashAttribute("message", "启动成功，流程ID：" + processInstance.getId());
+		redirectAttributes.addFlashAttribute("message", "启动成功，流程ID为：" + processInstance.getId());
 		if (allType.equals("allType"))
 			return "redirect:/form/dynamic/process-list/allType";
 		else
@@ -417,7 +418,7 @@ public class DynamicFormController {
 
 		String userId = UserUtil.getUserFromSession(session).getId();
 		taskService.claim(taskId, userId);
-		redirectAttributes.addFlashAttribute("message", "任务已签收");
+		redirectAttributes.addFlashAttribute("message", "任务已签收，任务ID为："+taskId);
 		return "redirect:/form/dynamic/task/list/" + allType;
 	}
 

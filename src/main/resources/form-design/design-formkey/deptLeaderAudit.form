@@ -1,0 +1,13 @@
+
+							<fieldset><div class="control-group">
+										<!-- Text -->
+										<label class="control-label">姓名</label>
+										<div class="controls designText">
+											<span class="read_only">${name}</span>
+										</div>
+
+									</div>
+
+    </fieldset>
+
+						

@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/processdef">
+  <process id="design-formkey" name="design-formkey" isExecutable="true">
+    <startEvent id="startEvent" name="start" activiti:initiator="applyUserId" activiti:formKey="design-formkey/start.form"/>
+    <userTask id="deptLeaderAudit" name="部门领导审核" activiti:candidateGroups="deptLeader" activiti:formKey="design-formkey/deptLeaderAudit.form"/>
+    <sequenceFlow id="flow1" sourceRef="startEvent" targetRef="deptLeaderAudit"/>
+    <sequenceFlow id="flow2" sourceRef="deptLeaderAudit" targetRef="endEvent"/>
+    <endEvent id="endEvent" name="end"/>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_design-formkey">
+    <bpmndi:BPMNPlane bpmnElement="design-formkey" id="BPMNPlane_design-formkey">
+      <bpmndi:BPMNShape bpmnElement="startEvent" id="BPMNShape_startEvent">
+        <omgdc:Bounds height="30.0" width="30.0" x="75.0" y="37.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="deptLeaderAudit" id="BPMNShape_deptLeaderAudit">
+        <omgdc:Bounds height="80.0" width="100.0" x="166.0" y="12.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endEvent" id="BPMNShape_endEvent">
+        <omgdc:Bounds height="28.0" width="28.0" x="303.0" y="38.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="105.0" y="52.0"/>
+        <omgdi:waypoint x="166.0" y="52.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="266.0" y="52.0"/>
+        <omgdi:waypoint x="303.0" y="52.0"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

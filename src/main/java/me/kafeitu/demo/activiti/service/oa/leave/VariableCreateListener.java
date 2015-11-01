@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 引擎的全局监听器
- * @author: Henry Yan
  */
 @Service
 @Transactional
